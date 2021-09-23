@@ -19,11 +19,11 @@ class Settings:
     }
 
     def __init__(self, config: Config) -> None:
-        self.sparse_ordering: bool = config.getoption("sparse_ordering")
-        self.order_dependencies: bool = config.getoption("order_dependencies")
-        scope: str = config.getoption("order_scope")
+        self.sparse_ordering = config.getoption("sparse_ordering")
+        self.order_dependencies = config.getoption("order_dependencies")
+        scope = config.getoption("order_scope")
         if scope in self.valid_scopes:
-            self.scope: Scope = self.valid_scopes[scope]
+            self.scope = self.valid_scopes[scope]
         else:
             if scope is not None:
                 warn(
@@ -32,17 +32,17 @@ class Settings:
                     .format(scope)
                 )
             self.scope = Scope.SESSION
-        scope_level: int = config.getoption("order_scope_level") or 0
+        scope_level = config.getoption("order_scope_level") or 0
         if scope_level != 0 and self.scope != Scope.SESSION:
             warn(
                 "order-scope-level cannot be used together with "
                 "--order-scope={}".format(scope)
             )
             scope_level = 0
-        self.scope_level: int = scope_level
-        group_scope: str = config.getoption("order_group_scope")
+        self.scope_level = scope_level
+        group_scope = config.getoption("order_group_scope")
         if group_scope in self.valid_scopes:
-            self.group_scope: Scope = self.valid_scopes[group_scope]
+            self.group_scope = self.valid_scopes[group_scope]
         else:
             if group_scope is not None:
                 warn(

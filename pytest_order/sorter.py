@@ -53,10 +53,10 @@ class Sorter:
     """
 
     def __init__(self, config: Config, items: List[Function]) -> None:
-        self.settings: Settings = Settings(config)
-        self.items: List[Item] = [Item(item) for item in items]
-        self.node_ids: Dict[str, Item] = OrderedDict()
-        self.node_id_last: Dict[str, List[str]] = {}
+        self.settings = Settings(config)
+        self.items = [Item(item) for item in items]
+        self.node_ids = OrderedDict()
+        self.node_id_last = {}
         for item in self.items:
             self.node_ids[item.node_id] = item
             last_part = item.node_id.rpartition("::")[2]
@@ -67,8 +67,8 @@ class Sorter:
             self.node_id_last.setdefault(last_part, []).append(
                 item.node_id
             )
-        self.rel_marks: List[RelativeMark[Item]] = []
-        self.dep_marks: List[RelativeMark[Item]] = []
+        self.rel_marks = []
+        self.dep_marks = []
 
     def sort_items(self) -> List[Function]:
         """
@@ -289,8 +289,8 @@ class Sorter:
         )
 
     def collect_markers(self) -> None:
-        aliases: Dict[str, Item] = {}
-        dep_marks: Dict[Tuple[str, Scope, str], List[Item]] = {}
+        aliases = {}
+        dep_marks = {}
         for item in self.items:
             self.mark_binning(item, dep_marks, aliases)
         self.resolve_dependency_markers(dep_marks, aliases)
@@ -324,7 +324,7 @@ def module_item_groups(items: List[Item]) -> Dict[str, List[Item]]:
     """
     Split items into groups per module.
     """
-    module_items: OrderedDict[str, List[Item]] = OrderedDict()
+    module_items = OrderedDict()
     for item in items:
         module_items.setdefault(item.module_path, []).append(item)
     return module_items
@@ -337,7 +337,7 @@ def directory_item_groups(
     Split items into groups per directory at the given level.
     The level is relative to the root directory, which is at level 0.
     """
-    module_items: OrderedDict[str, List[Item]] = OrderedDict()
+    module_items = OrderedDict()
     for item in items:
         module_items.setdefault(item.parent_path(level), []).append(item)
     return module_items
@@ -348,7 +348,7 @@ def class_item_groups(items: List[Item]) -> Dict[str, List[Item]]:
     Split items into groups per class.
     Items outside a class are sorted into a group per module.
     """
-    class_items: OrderedDict[str, List[Item]] = OrderedDict()
+    class_items = OrderedDict()
     for item in items:
         delimiter_index = item.node_id.index("::")
         if "::" in item.node_id[delimiter_index + 2:]:
@@ -493,19 +493,19 @@ class GroupSorter:
         rel_marks: List[RelativeMark[Item]],
         dep_marks: List[RelativeMark[Item]],
     ) -> None:
-        self.scope: Scope = scope
-        self.groups: List[ItemGroup] = groups
-        self.rel_marks: List[RelativeMark[ItemGroup]] = (
+        self.scope = scope
+        self.groups = groups
+        self.rel_marks = (
             self.collect_group_marks(rel_marks)
         )
-        self.dep_marks: List[RelativeMark[ItemGroup]] = (
+        self.dep_marks = (
             self.collect_group_marks(dep_marks)
         )
 
     def collect_group_marks(
         self, marks: List[RelativeMark[Item]]
     ) -> List[RelativeMark[ItemGroup]]:
-        group_marks: List[RelativeMark[ItemGroup]] = []
+        group_marks = []
         for mark in marks:
             group = self.group_for_item(mark.item)
             group_to_move = self.group_for_item(mark.item_to_move)

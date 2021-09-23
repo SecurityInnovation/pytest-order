@@ -13,10 +13,10 @@ class Item:
     """Represents a single test item."""
 
     def __init__(self, item: Function) -> None:
-        self.item: Function = item
-        self.nr_rel_items: int = 0
-        self.order: Optional[int] = None
-        self._node_id: Optional[str] = None
+        self.item = item
+        self.nr_rel_items = 0
+        self.order = None
+        self._node_id = None
 
     def inc_rel_marks(self) -> None:
         if self.order is None:
@@ -55,11 +55,11 @@ class ItemList:
         self.items = items
         self.settings = settings
         self.scope = scope
-        self.start_items: List[Tuple[int, List[Item]]] = []
-        self.end_items: List[Tuple[int, List[Item]]] = []
-        self.unordered_items: List[Item] = []
-        self._start_items: Dict[int, List[Item]] = {}
-        self._end_items: Dict[int, List[Item]] = {}
+        self.start_items = []
+        self.end_items = []
+        self.unordered_items = []
+        self._start_items = {}
+        self._end_items = {}
         self.all_rel_marks = rel_marks
         self.all_dep_marks = dep_marks
         self.rel_marks = filter_marks(rel_marks, items)
@@ -159,7 +159,7 @@ class ItemGroup:
     def __init__(
         self, items: Optional[List[Item]] = None, order: Optional[int] = None
     ) -> None:
-        self.items: List[Item] = items or []
+        self.items = items or []
         self.order = order
         self.nr_rel_items = 0
 
@@ -189,9 +189,9 @@ class RelativeMark(Generic[_ItemType]):
         item_to_move: _ItemType,
         move_after: bool,
     ) -> None:
-        self.item: _ItemType = item
-        self.item_to_move: _ItemType = item_to_move
-        self.move_after: bool = move_after
+        self.item  = item
+        self.item_to_move = item_to_move
+        self.move_after = move_after
 
 
 def filter_marks(
